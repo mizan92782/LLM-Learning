@@ -1,0 +1,104 @@
+2. RAG কেন প্রয়োজন?
+
+সাধারণ LLM-এর কিছু সীমাবদ্ধতা রয়েছে:
+
+Training-এর পরে তৈরি হওয়া নতুন তথ্য জানা নাও থাকতে পারে।
+
+তোমার ব্যক্তিগত বা প্রতিষ্ঠানের internal documents-এর তথ্য আগে থেকে জানা নাও থাকতে পারে।
+
+পর্যাপ্ত প্রাসঙ্গিক তথ্য ছাড়া ভুল বা বানানো উত্তর দিতে পারে।
+
+বড় document-এর সব তথ্য একসঙ্গে prompt-এ পাঠানো ব্যয়বহুল ও context window-এর জন্য অকার্যকর হতে পারে।
+
+RAG-এর মাধ্যমে প্রয়োজনীয় তথ্য retrieve করে prompt-এ পাঠানো যায়। তবে RAG ব্যবহার করলেই hallucination পুরোপুরি বন্ধ হয় না।
+
+
+
+4. FastAPI-তে Conversation History Management
+
+ধরো, একজন user-এর সঙ্গে chatbot-এর দীর্ঘ conversation চলছে। প্রতিটি request-এ সব message পাঠালে input token ক্রমাগত বাড়তে পারে।
+
+শেখার পর্যায়ে আমরা শুধু সাম্প্রতিক কিছু message পাঠাতে পারি।
+
+
+খরচ কমানোর কয়েকটি কৌশল:
+
+Limit history: অপ্রয়োজনীয় পুরোনো message বাদ দেওয়া।
+
+Summarization: দীর্ঘ conversation-এর পুরোনো অংশের সারাংশ তৈরি করে রাখা।
+
+Prompt optimization: অপ্রয়োজনীয় instruction ও অতিরিক্ত context বাদ দেওয়া।
+
+Output limit: max_tokens যুক্তিসংগতভাবে নির্ধারণ করা।
+
+Prompt caching: বারবার ব্যবহৃত একই prompt অংশ caching-এর উপযোগী হলে cache ব্যবহার করা।
+
+Model select
+
+
+
+
+
+
+
+3. RAG-এর প্রধান Components
+
+Component
+
+	
+
+কাজ
+
+
+
+
+Documents
+
+	
+
+PDF, TXT, DOCX বা অন্য knowledge source
+
+
+
+
+Chunking
+
+	
+
+বড় document-কে ছোট ছোট অংশে ভাগ করা
+
+
+
+
+Embedding
+
+	
+
+Text-কে সংখ্যাভিত্তিক vector-এ রূপান্তর করা
+
+
+
+
+Vector Database
+
+	
+
+Embedding ও সংশ্লিষ্ট text সংরক্ষণ করা
+
+
+
+
+Retriever
+
+	
+
+প্রশ্নের সঙ্গে সম্পর্কিত chunk খুঁজে বের করা
+
+
+
+
+LLM
+
+	
+
+Retrieved context ব্যবহার করে উত্তর তৈরি করা
